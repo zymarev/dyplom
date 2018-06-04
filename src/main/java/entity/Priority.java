@@ -1,7 +1,5 @@
 package entity;
 
-import java.util.Map;
-
 public class Priority {
     private int userId;
     private int lessonId;

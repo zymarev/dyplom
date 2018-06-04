@@ -1,30 +1,36 @@
 package service.impl;
 
 import dao.LessonDao;
-import dao.util.TransactionManager;
 import entity.Lesson;
 import service.LessonService;
 
+import java.util.List;
+
 public class LessonServiceImpl implements LessonService {
 
-    private TransactionManager transactionManager;
+
     private LessonDao lessonDao;
-    public LessonServiceImpl(TransactionManager transactionManager, LessonDao lessonDao){
-        this.transactionManager =transactionManager;
+    public LessonServiceImpl(LessonDao lessonDao){
+
         this.lessonDao =lessonDao;
     }
     @Override
     public Lesson getLessonById(int id) {
-        return transactionManager.doInTransaction(connection->lessonDao.getLessonById(connection, id));
+        return lessonDao.getLessonById(id);
     }
 
     @Override
     public Lesson getLessonByName(String name) {
-        return transactionManager.doInTransaction(connection -> lessonDao.getLessonByName(connection, name));
+        return lessonDao.getLessonByName(name);
     }
 
     @Override
     public int getMaxCountByLessonId(int lessonId) {
-        return transactionManager.doInTransaction(connection->lessonDao.getMaxCountByLessonId(connection, lessonId));
+        return lessonDao.getMaxCountByLessonId(lessonId);
+    }
+
+    @Override
+    public List<Lesson> getLessonsByCourseId(int courseId) {
+        return lessonDao.getLessonsByCourceId(courseId);
     }
 }

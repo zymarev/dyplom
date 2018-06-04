@@ -1,0 +1,15 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<div class="viewport">
+  <div class="list-group">
+    <c:if test = "${user.role eq 'USER'}">
+      <a class="list-group-item" href="Controller.do?command=userLessons">Установить приоритеты</a>
+      <a class="list-group-item" href="Controller.do?command=prioritiesByUser">Просмотреть приоритеты</a>
+    </c:if>
+    <c:if test = "${user.role eq 'ADMIN'}">
+      <a class="list-group-item" href="Controller.do?command=allUsers">Все пользователи</a>
+      <a class="list-group-item" href="Controller.do?command=allAccounts">all_accounts</a>
+      <a class="list-group-item" href="Controller.do?command=blockedAccounts">queries</a>
+    </c:if>
+  </div>
+</div>

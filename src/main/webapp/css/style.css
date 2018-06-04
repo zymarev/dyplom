@@ -1,0 +1,47 @@
+.sortBy {
+    position: relative;
+}
+
+.sortBy:before {
+    content: "\f0dc";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+
+    position: absolute;
+    top: 15px;
+    left: -5px;
+}
+
+.sortBy_asc {
+    position: relative;
+}
+
+.sortBy_asc:before {
+    content: "\f0de";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+
+    position: absolute;
+    top: 15px;
+    left: -5px;
+}
+
+.sortBy_desc {
+    position: relative;
+}
+
+.sortBy_desc:before {
+    content: "\f0dd";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+
+    position: absolute;
+    top: 15px;
+    left: -5px;
+}

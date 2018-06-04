@@ -2,13 +2,15 @@ package dao;
 
 import entity.User;
 
-import java.sql.Connection;
 import java.util.List;
 
 public interface UserDao extends Dao{
 
-    User getUserById(Connection connection, int id);
-    List<User> getAll(Connection connection);
-    List<User> getUsersWithPriorityValueByLessonId(Connection connection, int lessonId, int priorityValue);
-    boolean addUserToLessonGroup(Connection connection, int userId, int lessonId);
+    User getUserById(int id);
+    List<User> getAll();
+    List<User> getUsersWithPriorityValueByLessonId(int lessonId, int priorityValue);
+    boolean addUserToLessonGroup(int userId, int lessonId);
+    User findByEmail(String email);
+
+    List<User> getUsersByCourseName(String courseName);
 }
