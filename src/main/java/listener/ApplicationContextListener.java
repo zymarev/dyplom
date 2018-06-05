@@ -9,23 +9,17 @@ import command.LogoutCommand;
 import command.container.CommandContainer;
 import command.impl.GetUsersByCourseCommand;
 import command.impl.lesson.FormGroupCommand;
+import command.impl.lesson.GetAllLessonsCommand;
+import command.impl.lesson.GetLessonsByCourseNameCommand;
 import command.impl.user.GetUserByIdCommand;
-import dao.Dao;
-import dao.LessonDao;
-import dao.PriorityDao;
-import dao.UserDao;
+import dao.*;
 import command.EstablishPriorityCommand;
+import dao.impl.CourseDaoImpl;
 import dao.impl.LessonDaoImpl;
 import dao.impl.PriorityDaoImpl;
 import dao.impl.UserDaoImpl;
-import service.LessonService;
-import service.PriorityService;
-import service.Service;
-import service.UserService;
-import service.impl.GroupFormer;
-import service.impl.LessonServiceImpl;
-import service.impl.PriorityServiceImpl;
-import service.impl.UserServiceImpl;
+import service.*;
+import service.impl.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -64,12 +58,14 @@ public class ApplicationContextListener implements ServletContextListener {
         services.put(LessonServiceImpl.class, new LessonServiceImpl((LessonDao)daos.get(LessonDaoImpl.class)));
         services.put(PriorityServiceImpl.class, new PriorityServiceImpl((PriorityDao)daos.get(PriorityDaoImpl.class)));
         services.put(GroupFormer.class, new GroupFormer((UserDao)daos.get(UserDaoImpl.class), (LessonDao)daos.get(LessonDaoImpl.class), (PriorityDao)daos.get(PriorityDaoImpl.class)));
+        services.put(CourseServiceImpl.class, new CourseServiceImpl((CourseDao)daos.get(CourseDaoImpl.class)));
     }
     private void initDaos(){
         daos = new HashMap<>();
         daos.put(UserDaoImpl.class, new UserDaoImpl());
         daos.put(LessonDaoImpl.class, new LessonDaoImpl());
         daos.put(PriorityDaoImpl.class, new PriorityDaoImpl());
+        daos.put(CourseDaoImpl.class, new CourseDaoImpl());
     }
     private void initCommands(){
         commands = new HashMap<>();
@@ -82,6 +78,8 @@ public class ApplicationContextListener implements ServletContextListener {
         commands.put("prioritiesByUser", new GetPrioritiesByUserCommand((PriorityService)services.get(PriorityServiceImpl.class), (LessonService)services.get(LessonServiceImpl.class)));
         commands.put("allUsers", new GetAllUsersCommand((UserService)services.get(UserServiceImpl.class)));
         commands.put("usersByCourse", new GetUsersByCourseCommand((UserService)services.get(UserServiceImpl.class)));
+        commands.put("allLessons", new GetAllLessonsCommand((LessonService)services.get(LessonServiceImpl.class)));
+        commands.put("lessonsByCourseName", new GetLessonsByCourseNameCommand((LessonService)services.get(LessonServiceImpl.class), (CourseService)services.get(CourseServiceImpl.class)));
     }
 
 

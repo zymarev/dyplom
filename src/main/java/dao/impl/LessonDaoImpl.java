@@ -18,7 +18,7 @@ public class LessonDaoImpl extends DbConnector implements LessonDao {
     private static final String SQL_GET_LESSON_BY_NAME = "SELECT * FROM lessons WHERE name =?";
     private static final String SQL_GET_ALL_LESSONS = "SELECT * FROM lessons";
     private static final String SQL_GET_MAX_COUNT_BY_LESSON_ID = "SELECT max_count FROM lessons WHERE lessons.id = ?";
-    private static final String SQL_ADD_LESSON = "INSERT INTO lessons (name, max_count) VALUES(?, ?)";
+    private static final String SQL_ADD_LESSON = "INSERT INTO lessons (name, max_count, course_id, professor) VALUES(?, ?, ?, ?)";
     private static final String SQL_GET_LESSONS_BY_COURSE_ID = "SELECT * FROM lessons WHERE course_id = ?";
 
     @Override
@@ -82,11 +82,13 @@ public class LessonDaoImpl extends DbConnector implements LessonDao {
     }
 
     @Override
-    public void addLesson(String name, int maxCount) {
+    public void addLesson(String name, int maxCount, int courseId, String professor ) {
         try(PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQL_ADD_LESSON)){
             int i=0;
             preparedStatement.setString(++i, name);
             preparedStatement.setInt(++i, maxCount);
+            preparedStatement.setInt(++i, courseId);
+            preparedStatement.setString(++i, professor);
             preparedStatement.execute();
         }catch (SQLException ex){
             throw new PersistException("Can't add new lesson");
@@ -112,6 +114,7 @@ public class LessonDaoImpl extends DbConnector implements LessonDao {
     private Lesson extractLesson(ResultSet rs) throws SQLException {
         Lesson lesson = new Lesson();
         lesson.setId(rs.getInt("id"));
+        lesson.setProfessor(rs.getString("professor"));
         lesson.setName(rs.getString("name"));
         lesson.setMaxCount(rs.getInt("max_count"));
         return lesson;

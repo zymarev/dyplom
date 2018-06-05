@@ -8,7 +8,7 @@
     </c:if>
     <c:if test = "${user.role eq 'ADMIN'}">
       <a class="list-group-item" href="Controller.do?command=allUsers">Все пользователи</a>
-      <a class="list-group-item" href="Controller.do?command=allAccounts">all_accounts</a>
+      <a class="list-group-item" href="Controller.do?command=allLessons">Все предметы</a>
       <a class="list-group-item" href="Controller.do?command=blockedAccounts">queries</a>
     </c:if>
   </div>

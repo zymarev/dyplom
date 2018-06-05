@@ -24,7 +24,12 @@
     <script src="js/jquery.tablesorter.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
     <script src="js/jquery.tablesorter.pager.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+    	$("#myTable").tablesorter();
+        });
 
+    </script>
 </head>
 <body>
 <%@include file="/WEB-INF/jspf/header.jspf"%>
@@ -34,31 +39,31 @@
             <%@include file="/WEB-INF/jspf/leftMenu.jspf"%>
         </div>
         <!-- The Modal -->
-        <form action="Controller.do?command=setPriority" method="POST">
-                <input type="hidden" name="command" value="paymentsInLimits">
+        <form action="Controller.do?command=lessonsByCourseName" method="POST">
+                <input type="text" name="courseName" placeHolder="course">
+                <button type="submit">Submit</button>
 
         <div class="col-9">
             <table id="myTable" class="table">
                 <thead>
                 <tr>
                     <th>Название</th>
-                    <th>Приоритет<th>
-
+                    <th>Количсетво студентов<th>
+                    <th>Преподаватель</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                <c:forEach var="lesson" items="${userLessons}">
+                <c:forEach var="lesson" items="${allLessons}">
                     <tr>
                         <td>${lesson.name}</td>
-                        <td><input type="text" name="${lesson.id}"/>
-
-
+                        <td>${lesson.maxCount}</td>
+                        <td>${lesson.professor}</td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <button type="submit">Submit</button>
+
             <p font-color="red">${error}</p>
         </div>
     </div>

@@ -5,6 +5,7 @@ public class Lesson {
     private int id;
     private String name;
     private int maxCount;
+    private String professor;
 
     public Lesson() {
     }
@@ -31,5 +32,13 @@ public class Lesson {
 
     public void setMaxCount(int maxCount) {
         this.maxCount = maxCount;
+    }
+
+    public String getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(String professor) {
+        this.professor = professor;
     }
 }

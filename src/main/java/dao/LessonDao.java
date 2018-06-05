@@ -11,7 +11,7 @@ public interface LessonDao extends Dao{
     Lesson getLessonByName(String name);
     List<Lesson> getAll();
     int getMaxCountByLessonId(int lessonId);
-    void addLesson(String name, int maxCount);
+    void addLesson(String name, int maxCount, int courseId, String professor);
 
     List<Lesson> getLessonsByCourceId(int courseId);
 }

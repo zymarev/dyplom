@@ -33,4 +33,14 @@ public class LessonServiceImpl implements LessonService {
     public List<Lesson> getLessonsByCourseId(int courseId) {
         return lessonDao.getLessonsByCourceId(courseId);
     }
+
+    @Override
+    public void addLesson(String name, int maxValue, int courseId, String professor) {
+        lessonDao.addLesson(name, maxValue, courseId, professor);
+    }
+
+    @Override
+    public List<Lesson> getAll() {
+        return lessonDao.getAll();
+    }
 }
