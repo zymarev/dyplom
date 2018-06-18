@@ -9,6 +9,7 @@ import command.LogoutCommand;
 import command.container.CommandContainer;
 import command.impl.GetUsersByCourseCommand;
 import command.impl.lesson.*;
+import command.impl.user.GetGroupForUserCommand;
 import command.impl.user.GetUserByIdCommand;
 import dao.*;
 import command.EstablishPriorityCommand;
@@ -80,6 +81,7 @@ public class ApplicationContextListener implements ServletContextListener {
         commands.put("addLesson", new AddLessonCommand((LessonService)services.get(LessonServiceImpl.class), (CourseService)services.get(CourseServiceImpl.class)));
         commands.put("getGroups", new GetGroupsCommand((CourseService)services.get(CourseServiceImpl.class), (LessonService)services.get(LessonServiceImpl.class), (UserService)services.get(UserServiceImpl.class)));
         commands.put("formGroups", new FormGroupCommand((GroupFormer)services.get(GroupFormer.class), (LessonService)services.get(LessonServiceImpl.class), (GetGroupsCommand) commands.get("getGroups")));
+        commands.put("getGroupForUser", new GetGroupForUserCommand((UserService)services.get(UserServiceImpl.class), (LessonService)services.get(LessonServiceImpl.class)));
     }
 
 

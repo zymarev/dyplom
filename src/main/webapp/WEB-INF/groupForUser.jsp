@@ -41,33 +41,22 @@
             <%@include file="/WEB-INF/jspf/leftMenu.jspf"%>
         </div>
         <div class="col-9">
-        <form action="Controller.do?command=getGroups" method="POST">
-                        <input type="text" name="courseNameForGroups" placeHolder="${courseName}">
-                        <button type="submit">Submit</button>
-                        <c:if test="${empty groupsForCourse}">
-                        Groups have not been formed yet. Do you want to<a href="Controller.do?command=formGroups&courseNameForGroups=${courseName}"> generate</a> it now?
+                        <c:if test="${empty group}">
+                        Groups have not been formed yet.
                         </c:if>
-                        <c:if test="${not empty groupsForCourse}">
+                        <c:if test="${not empty group}">
+                        <b>${group.lesson.name}</b>
        <table class="table table-responsive table-hover">
 
            <tbody>
-           <c:forEach var="map" items="${groupsForCourse}">
+           <c:forEach var="user" items="${group.users}">
+                <tr>
+                <td>${user.firstName}</td>
+                <td>${user.lastName}</td>
+                </tr>
 
-               <tr class="clickable waves-effect" data-toggle="collapse" id="${map.lesson.name}" data-target=".${map.lesson.name}">
 
-                   <td>${map.lesson.name}</td>
-                 	<td>${map.lesson.professor}</td>
-                   <td>${map.lesson.maxCount}</td>
-               </tr>
-               <c:forEach var="user" items="${map.users}">
-               <tr class="collapse ${map.lesson.name}">
 
-                           <td style="background-color: #CAF6EC">${user.firstName}</td>
-                         	<td style="background-color: #CAF6EC">${user.lastName}</td>
-                           <td style="background-color: #CAF6EC">${user.avgMark}</td>
-
-                       </tr>
-                </c:forEach>
 
 
 

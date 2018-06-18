@@ -39,10 +39,12 @@
             <%@include file="/WEB-INF/jspf/leftMenu.jspf"%>
         </div>
         <!-- The Modal -->
-        <form action="Controller.do?command=formGroups" method="POST">
-                <input type="text" name="courseNameForGroups" placeHolder="course">
-                <button type="submit">Submit</button>
 
+        <form action="Controller.do?command=getGroups" method="POST">
+                <input type="text" name="courseNameForGroups" placeHolder="course">
+                <input type="hidden" value=""
+                <button type="submit">Submit</button>
+ Groups have not been formed yet. Do you <a href="Controller.do?command=formGroups&courseNameForGroups=${courseNameForGroups}">generate</a> it now?
 
     </div>
 </div>

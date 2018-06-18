@@ -25,7 +25,7 @@ public class LessonDaoImpl extends DbConnector implements LessonDao {
         try(Connection connection = dataSource.getConnection();
         PreparedStatement statement = connection.prepareStatement(SQL_GET_GROUPS_LESSON)) {
             statement.setInt(1, courseId);
-            ResultSet resultSet = statement.executeQuery(SQL_GET_GROUPS_LESSON);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 LessonUserPair pair = extractLessonUserPair(resultSet);
                 pairs.add(pair);

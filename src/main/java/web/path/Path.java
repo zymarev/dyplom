@@ -13,5 +13,5 @@ public class Path {
     public static final String PAGE_LESSONS_BY_COURSE = "/WEB-INF/lessonsByCourse.jsp";
     public static final String PAGE_ALL_LESSONS = "/WEB-INF/allLessons.jsp";
     public static final String PAGE_WITH_FORMED_GROUPS = "/WEB-INF/formedGroups.jsp";
-    public static final String PAGE_NOT_FORMED_GROUPS="/WEB-INF/notFormedGroups.jsp";
+    public static final String PAGE_WITH_GROUP_FOR_USER="/WEB-INF/groupForUser.jsp";
 }

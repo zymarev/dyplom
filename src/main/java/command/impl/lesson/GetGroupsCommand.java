@@ -33,22 +33,25 @@ public class GetGroupsCommand implements Command {
         int courseId = courseService.getIdByName(courseName).getId();
         List<LessonUserPair> pairs = lessonService.getAllGroupsByCourseId(courseId);
         if(pairs.isEmpty()){
-            return Path.PAGE_NOT_FORMED_GROUPS;
+            request.setAttribute("groupsForCourse", null);
+            request.setAttribute("courseName", courseName);
+            return Path.PAGE_WITH_FORMED_GROUPS;
+        }else {
+            Map<Integer, List<User>> map = new HashMap<>();
+            List<LessonUsersDto> groupsForCourse = new ArrayList<>();
+            pairs.forEach(pair -> {
+                if (map.containsKey(pair.getLessonId())) {
+                    map.get(pair.getLessonId()).add(userService.getUserById(pair.getUserId()));
+                } else {
+                    ArrayList<User> list = new ArrayList<>();
+                    list.add(userService.getUserById(pair.getUserId()));
+                    map.put(pair.getLessonId(), list);
+                }
+            });
+            map.forEach((key, value) -> groupsForCourse.add(new LessonUsersDto(lessonService.getLessonById(key), value)));
+            request.setAttribute("groupsForCourse", groupsForCourse);
+            return Path.PAGE_WITH_FORMED_GROUPS;
         }
-        Map<Integer, List<User>> map = new HashMap<>();
-        List<LessonUsersDto> groupsForCourse = new ArrayList<>();
-        pairs.forEach(pair->{
-            if(map.containsKey(pair.getLessonId())){
-                map.get(pair.getLessonId()).add(userService.getUserById(pair.getUserId()));
-            }else{
-                ArrayList<User> list = new ArrayList<>();
-                list.add(userService.getUserById(pair.getUserId()));
-                map.put(pair.getLessonId(), list);
-            }
-        });
-        map.forEach((key, value)->groupsForCourse.add(new LessonUsersDto(lessonService.getLessonById(key), value)));
-        request.setAttribute("groupsForCourse", groupsForCourse);
-        return Path.PAGE_WITH_FORMED_GROUPS;
 
 
     }

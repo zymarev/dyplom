@@ -1,5 +1,7 @@
 package service;
 
+import dto.LessonGroupDto;
+import dto.LessonUserPair;
 import entity.User;
 
 import java.util.List;
@@ -11,4 +13,6 @@ public interface UserService extends Service{
     User findByEmail(String email);
 
     List<User> getUsersByCourseName(String courseName);
+
+    List<LessonUserPair> getGroupForUser(User user);
 }

@@ -69,6 +69,7 @@ public class GroupFormer implements Service {
         });
         return groups;
     }
+    
 
     private void clearTempGoups(int courseId) {
         for (Lesson lesson : lessonDao.getLessonsByCourceId(courseId)) {

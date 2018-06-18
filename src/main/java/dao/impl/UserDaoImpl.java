@@ -2,6 +2,8 @@ package dao.impl;
 
 import dao.UserDao;
 import db.DbConnector;
+import dto.LessonGroupDto;
+import dto.LessonUserPair;
 import entity.Role;
 import entity.User;
 import exception.PersistException;
@@ -21,7 +23,7 @@ public class UserDaoImpl extends DbConnector implements UserDao{
     private static final String SQL_ADD_USER_TO_LESSON_GROUP = "INSERT INTO group_lesson (user_id, lesson_id) VALUES (?, ?)";
     private static final String SQL_GET_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
     private static final String SQL_GET_USERS_BY_COURSE_NAME = "SELECT users.id, users.course_id, users.first_name, users.last_name, users.email, users.password, users.average_mark, users.role, course.name FROM users, course WHERE users.course_id=course.id AND course.name = ?";
-
+    private static final String SQL_GET_GROUP_FOR_USER = "SELECT * FROM group_lesson WHERE group_lesson.lesson_id = (SELECT group_lesson.lesson_id FROM group_lesson WHERE group_lesson.user_id = ?)";
 
     @Override
     public boolean addUserToLessonGroup(int userId, int lessonId) {
@@ -69,6 +71,25 @@ public class UserDaoImpl extends DbConnector implements UserDao{
         }catch (SQLException ex){
             throw new PersistException("Can't get users by course name");
         }
+    }
+
+    @Override
+    public List<LessonUserPair> getGroupForUser(User user) {
+        List<LessonUserPair> group = new ArrayList<>();
+        try(Connection connection = dataSource.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_GROUP_FOR_USER)){
+            preparedStatement.setInt(1, user.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                LessonUserPair pair = new LessonUserPair();
+                pair.setLessonId(resultSet.getInt("lesson_id"));
+                pair.setUserId(resultSet.getInt("user_id"));
+                group.add(pair);
+            }
+        }catch(SQLException ex){
+            throw new PersistException("can't get group for user");
+        }
+        return group;
     }
 
     @Override

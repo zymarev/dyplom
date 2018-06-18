@@ -1,6 +1,8 @@
 package service.impl;
 
 import dao.UserDao;
+import dto.LessonGroupDto;
+import dto.LessonUserPair;
 import entity.User;
 import service.UserService;
 
@@ -37,5 +39,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsersByCourseName(String courseName) {
         return userDao.getUsersByCourseName(courseName);
+    }
+
+    @Override
+    public List<LessonUserPair> getGroupForUser(User user) {
+        return userDao.getGroupForUser(user);
     }
 }
