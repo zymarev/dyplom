@@ -1,6 +1,7 @@
 package service.impl;
 
 import dao.LessonDao;
+import dto.LessonUserPair;
 import entity.Lesson;
 import service.LessonService;
 
@@ -42,5 +43,10 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public List<Lesson> getAll() {
         return lessonDao.getAll();
+    }
+
+    @Override
+    public List<LessonUserPair> getAllGroupsByCourseId(int courseId){
+        return lessonDao.getAllGroupsByCourseId(courseId);
     }
 }

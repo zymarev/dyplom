@@ -1,5 +1,6 @@
 package dao;
 
+import dto.LessonUserPair;
 import entity.Lesson;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public interface LessonDao extends Dao{
     List<Lesson> getAll();
     int getMaxCountByLessonId(int lessonId);
     void addLesson(String name, int maxCount, int courseId, String professor);
+    List<LessonUserPair> getAllGroupsByCourseId(int courseId);
 
     List<Lesson> getLessonsByCourceId(int courseId);
 }

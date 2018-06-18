@@ -1,5 +1,6 @@
 package service;
 
+import dto.LessonUserPair;
 import entity.Lesson;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface LessonService extends Service{
     List<Lesson> getLessonsByCourseId(int courseId);
     void addLesson(String name, int maxValue, int courseId, String professor);
     List<Lesson> getAll();
+    List<LessonUserPair> getAllGroupsByCourseId(int courseId);
 }

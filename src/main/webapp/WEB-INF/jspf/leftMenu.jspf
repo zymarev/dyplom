@@ -9,7 +9,7 @@
     <c:if test = "${user.role eq 'ADMIN'}">
       <a class="list-group-item waves-effect" href="Controller.do?command=allUsers" style="background-color: #9CD2C5">Все пользователи</a>
       <a class="list-group-item waves-effect" href="Controller.do?command=allLessons" style="background-color: #9CD2C5">Все предметы</a>
-      <a class="list-group-item waves-effect" href="Controller.do?command=formGroups" style="background-color: #9CD2C5">Сформировать группы</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=getGroups&courseNameForGroups=pi-14" style="background-color: #9CD2C5">Сформировать группы</a>
     </c:if>
   </div>
 </div>

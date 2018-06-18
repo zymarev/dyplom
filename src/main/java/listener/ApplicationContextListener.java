@@ -8,10 +8,7 @@ import command.LoginCommand;
 import command.LogoutCommand;
 import command.container.CommandContainer;
 import command.impl.GetUsersByCourseCommand;
-import command.impl.lesson.AddLessonCommand;
-import command.impl.lesson.FormGroupCommand;
-import command.impl.lesson.GetAllLessonsCommand;
-import command.impl.lesson.GetLessonsByCourseNameCommand;
+import command.impl.lesson.*;
 import command.impl.user.GetUserByIdCommand;
 import dao.*;
 import command.EstablishPriorityCommand;
@@ -71,7 +68,6 @@ public class ApplicationContextListener implements ServletContextListener {
     private void initCommands(){
         commands = new HashMap<>();
         commands.put("getUserById", new GetUserByIdCommand((UserService)services.get(UserServiceImpl.class)));
-        commands.put("groupFormer", new FormGroupCommand((GroupFormer)services.get(GroupFormer.class), (LessonService)services.get(LessonServiceImpl.class)));
         commands.put("login", new LoginCommand((UserService)services.get(UserServiceImpl.class)));
         commands.put("userLessons", new GetLessonsByCourseCommand((LessonService)services.get(LessonServiceImpl.class), (PriorityService)services.get(PriorityServiceImpl.class)));
         commands.put("setPriority", new EstablishPriorityCommand((PriorityService)services.get(PriorityServiceImpl.class)));
@@ -82,7 +78,8 @@ public class ApplicationContextListener implements ServletContextListener {
         commands.put("allLessons", new GetAllLessonsCommand((LessonService)services.get(LessonServiceImpl.class)));
         commands.put("lessonsByCourseName", new GetLessonsByCourseNameCommand((LessonService)services.get(LessonServiceImpl.class), (CourseService)services.get(CourseServiceImpl.class)));
         commands.put("addLesson", new AddLessonCommand((LessonService)services.get(LessonServiceImpl.class), (CourseService)services.get(CourseServiceImpl.class)));
-        commands.put("formGroups", new FormGroupCommand((GroupFormer)services.get(GroupFormer.class), (LessonService)services.get(LessonServiceImpl.class)));
+        commands.put("getGroups", new GetGroupsCommand((CourseService)services.get(CourseServiceImpl.class), (LessonService)services.get(LessonServiceImpl.class), (UserService)services.get(UserServiceImpl.class)));
+        commands.put("formGroups", new FormGroupCommand((GroupFormer)services.get(GroupFormer.class), (LessonService)services.get(LessonServiceImpl.class), (GetGroupsCommand) commands.get("getGroups")));
     }
 
 

@@ -1,6 +1,7 @@
 package service.impl;
 
 import dao.CourseDao;
+import dto.LessonUserPair;
 import entity.Course;
 import service.CourseService;
 
@@ -22,4 +23,5 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> getAll() {
         return courseDao.getAll();
     }
+
 }

@@ -2,6 +2,7 @@ package dao.impl;
 
 import dao.LessonDao;
 import db.DbConnector;
+import dto.LessonUserPair;
 import entity.Lesson;
 import exception.PersistException;
 
@@ -17,6 +18,30 @@ public class LessonDaoImpl extends DbConnector implements LessonDao {
     private static final String SQL_GET_MAX_COUNT_BY_LESSON_ID = "SELECT max_count FROM lessons WHERE lessons.id = ?";
     private static final String SQL_ADD_LESSON = "INSERT INTO lessons (name, max_count, course_id, professor) VALUES(?, ?, ?, ?)";
     private static final String SQL_GET_LESSONS_BY_COURSE_ID = "SELECT * FROM lessons WHERE course_id = ?";
+    private static final String SQL_GET_GROUPS_LESSON = "SELECT group_lesson.user_id, group_lesson.lesson_id FROM group_lesson, lessons, course WHERE group_lesson.lesson_id = lessons.id AND lessons.course_id = course.id AND course.id = ?";
+    @Override
+    public  List<LessonUserPair> getAllGroupsByCourseId(int courseId){
+        List<LessonUserPair> pairs = new ArrayList<>();
+        try(Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(SQL_GET_GROUPS_LESSON)) {
+            statement.setInt(1, courseId);
+            ResultSet resultSet = statement.executeQuery(SQL_GET_GROUPS_LESSON);
+            while (resultSet.next()) {
+                LessonUserPair pair = extractLessonUserPair(resultSet);
+                pairs.add(pair);
+            }
+        }catch (SQLException ex){
+            throw new PersistException("Can't get lesson_user pairs");
+        }
+        return pairs;
+    }
+
+    private LessonUserPair extractLessonUserPair(ResultSet resultSet) throws SQLException {
+        LessonUserPair lessonUserPair = new LessonUserPair();
+        lessonUserPair.setLessonId(resultSet.getInt("lesson_id"));
+        lessonUserPair.setUserId(resultSet.getInt("user_id"));
+        return  lessonUserPair;
+    }
 
     @Override
     public Lesson getLessonById(int id) {
