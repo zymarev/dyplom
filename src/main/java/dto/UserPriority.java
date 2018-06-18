@@ -3,7 +3,8 @@ package dto;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserPriority {
+public class
+UserPriority {
     private int userId;
     private Map<Integer, Integer> priorities;
 

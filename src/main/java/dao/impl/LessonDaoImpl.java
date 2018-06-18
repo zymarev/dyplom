@@ -5,10 +5,7 @@ import db.DbConnector;
 import entity.Lesson;
 import exception.PersistException;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +21,8 @@ public class LessonDaoImpl extends DbConnector implements LessonDao {
     @Override
     public Lesson getLessonById(int id) {
         Lesson lesson = new Lesson();
-        try(PreparedStatement pstmt = dataSource.getConnection().prepareStatement(SQL_GET_LESSON_BY_ID)){
+        try(Connection connection = dataSource.getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(SQL_GET_LESSON_BY_ID)){
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()){
@@ -39,7 +37,8 @@ public class LessonDaoImpl extends DbConnector implements LessonDao {
     @Override
     public Lesson getLessonByName(String name) {
         Lesson lesson = new Lesson();
-        try(PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQL_GET_LESSON_BY_NAME)){
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_LESSON_BY_NAME)){
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
@@ -54,7 +53,8 @@ public class LessonDaoImpl extends DbConnector implements LessonDao {
     @Override
     public List<Lesson> getAll() {
         List<Lesson> lessons = new ArrayList<>();
-        try(Statement statement = dataSource.getConnection().createStatement()){
+        try(Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement()){
             ResultSet rs = statement.executeQuery(SQL_GET_ALL_LESSONS);
             while(rs.next()){
                 Lesson lesson = extractLesson(rs);
@@ -69,7 +69,8 @@ public class LessonDaoImpl extends DbConnector implements LessonDao {
     @Override
     public int getMaxCountByLessonId(int lessonId) {
         int maxCount=0;
-        try(PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQL_GET_MAX_COUNT_BY_LESSON_ID)){
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_MAX_COUNT_BY_LESSON_ID)){
             preparedStatement.setInt(1, lessonId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
@@ -83,7 +84,8 @@ public class LessonDaoImpl extends DbConnector implements LessonDao {
 
     @Override
     public void addLesson(String name, int maxCount, int courseId, String professor ) {
-        try(PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQL_ADD_LESSON)){
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_LESSON)){
             int i=0;
             preparedStatement.setString(++i, name);
             preparedStatement.setInt(++i, maxCount);
@@ -98,7 +100,8 @@ public class LessonDaoImpl extends DbConnector implements LessonDao {
     @Override
     public List<Lesson> getLessonsByCourceId(int courseId) {
         List<Lesson> lessons = new ArrayList<>();
-        try(PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQL_GET_LESSONS_BY_COURSE_ID)){
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_LESSONS_BY_COURSE_ID)){
             preparedStatement.setInt(1, courseId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){

@@ -33,13 +33,13 @@
 </head>
 <body>
 <%@include file="/WEB-INF/jspf/header.jspf"%>
-<div class="container-fluid">
+<div class="container-fluid" style="background-color: #F0F8FB">
     <div class="row">
         <div class="col-3">
             <%@include file="/WEB-INF/jspf/leftMenu.jspf"%>
         </div>
         <!-- The Modal -->
-        <form action="Controller.do?command=usersByCourse" method="POST">
+        <form action="Controller.do?command=lessonsByCourseName" method="POST">
                 <input type="text" name="courseName" placeHolder="course">
                 <button type="submit">Submit</button>
 
@@ -54,7 +54,7 @@
                 </thead>
                 <tbody>
 
-                <c:forEach var="lesson" items="${lessonsByCourse}">
+                <c:forEach var="lesson" items="${lessonsByCourseName}">
                     <tr>
                         <td>${lesson.name}</td>
                         <td>${lesson.maxCount}</td>

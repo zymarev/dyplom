@@ -27,7 +27,7 @@
         		</form>
         	</div>
 	</nav>
-<div class="container" align="center">
+<div class="container" align="center" style="background-color: #F0F8FB">
     <div class="page-header">
 
         <h2>${successRegistration}</h2>

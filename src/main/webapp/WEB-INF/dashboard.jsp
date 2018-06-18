@@ -22,18 +22,14 @@
   </head>
   <body>
   <%@include file="/WEB-INF/jspf/header.jspf"%>
-  <div class="container-fluid">
+  <div class="container-fluid" style="background-color: #F0F8FB">
       <div class="row">
           <div class="col-3">
               <%@include file="/WEB-INF/jspf/leftMenu.jspf"%>
           </div>
           <!-- Modal -->
           <div class="container">
-            <h2>Modal Example</h2>
-            <!-- Button to Open the Modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-              Open modal
-            </button>
+            
                 </div>
               </div>
             </div>

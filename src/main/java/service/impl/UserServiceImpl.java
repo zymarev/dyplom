@@ -22,10 +22,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getAll(){
         return userDao.getAll();
     }
-    @Override
-    public List<User> getUsersWithPriorityValueByLessonId(int lessonId, int priorityValue){
-        return userDao.getUsersWithPriorityValueByLessonId(lessonId, priorityValue);
-    }
+
 
     @Override
     public boolean addUserToLessonGroup(int userId, int lessonId) {

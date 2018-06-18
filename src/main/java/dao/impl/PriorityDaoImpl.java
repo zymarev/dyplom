@@ -22,7 +22,8 @@ public class PriorityDaoImpl extends DbConnector implements PriorityDao {
     @Override
     public List<Priority> getPrioritiesByUserId(int id) {
         List<Priority> priorities = new ArrayList<>();
-        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQL_GET_PRIORITIES_BY_USER)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_PRIORITIES_BY_USER)) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -36,7 +37,8 @@ public class PriorityDaoImpl extends DbConnector implements PriorityDao {
 
     @Override
     public void addPriority(int userId, int lessonId, int value) {
-        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQL_ADD_PRIORITY)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_PRIORITY)) {
             int i = 1;
             preparedStatement.setInt(i++, userId);
             preparedStatement.setInt(i++, lessonId);
@@ -50,7 +52,8 @@ public class PriorityDaoImpl extends DbConnector implements PriorityDao {
     @Override
     public List<Priority> getAll() {
         List<Priority> priorities = new ArrayList<>();
-        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQL_GET_ALL_PRIORITIES)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_ALL_PRIORITIES)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 Priority priority = extractPriority(resultSet);

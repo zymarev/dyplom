@@ -8,6 +8,7 @@ import command.LoginCommand;
 import command.LogoutCommand;
 import command.container.CommandContainer;
 import command.impl.GetUsersByCourseCommand;
+import command.impl.lesson.AddLessonCommand;
 import command.impl.lesson.FormGroupCommand;
 import command.impl.lesson.GetAllLessonsCommand;
 import command.impl.lesson.GetLessonsByCourseNameCommand;
@@ -57,7 +58,7 @@ public class ApplicationContextListener implements ServletContextListener {
         services.put(UserServiceImpl.class, new UserServiceImpl((UserDao)daos.get(UserDaoImpl.class)));
         services.put(LessonServiceImpl.class, new LessonServiceImpl((LessonDao)daos.get(LessonDaoImpl.class)));
         services.put(PriorityServiceImpl.class, new PriorityServiceImpl((PriorityDao)daos.get(PriorityDaoImpl.class)));
-        services.put(GroupFormer.class, new GroupFormer((UserDao)daos.get(UserDaoImpl.class), (LessonDao)daos.get(LessonDaoImpl.class), (PriorityDao)daos.get(PriorityDaoImpl.class)));
+        services.put(GroupFormer.class, new GroupFormer((UserDao)daos.get(UserDaoImpl.class), (LessonDao)daos.get(LessonDaoImpl.class), (PriorityDao)daos.get(PriorityDaoImpl.class), (CourseDao)daos.get(CourseDaoImpl.class)));
         services.put(CourseServiceImpl.class, new CourseServiceImpl((CourseDao)daos.get(CourseDaoImpl.class)));
     }
     private void initDaos(){
@@ -70,7 +71,7 @@ public class ApplicationContextListener implements ServletContextListener {
     private void initCommands(){
         commands = new HashMap<>();
         commands.put("getUserById", new GetUserByIdCommand((UserService)services.get(UserServiceImpl.class)));
-        commands.put("groupFormer", new FormGroupCommand((GroupFormer)services.get(GroupFormer.class)));
+        commands.put("groupFormer", new FormGroupCommand((GroupFormer)services.get(GroupFormer.class), (LessonService)services.get(LessonServiceImpl.class)));
         commands.put("login", new LoginCommand((UserService)services.get(UserServiceImpl.class)));
         commands.put("userLessons", new GetLessonsByCourseCommand((LessonService)services.get(LessonServiceImpl.class), (PriorityService)services.get(PriorityServiceImpl.class)));
         commands.put("setPriority", new EstablishPriorityCommand((PriorityService)services.get(PriorityServiceImpl.class)));
@@ -80,7 +81,10 @@ public class ApplicationContextListener implements ServletContextListener {
         commands.put("usersByCourse", new GetUsersByCourseCommand((UserService)services.get(UserServiceImpl.class)));
         commands.put("allLessons", new GetAllLessonsCommand((LessonService)services.get(LessonServiceImpl.class)));
         commands.put("lessonsByCourseName", new GetLessonsByCourseNameCommand((LessonService)services.get(LessonServiceImpl.class), (CourseService)services.get(CourseServiceImpl.class)));
+        commands.put("addLesson", new AddLessonCommand((LessonService)services.get(LessonServiceImpl.class), (CourseService)services.get(CourseServiceImpl.class)));
+        commands.put("formGroups", new FormGroupCommand((GroupFormer)services.get(GroupFormer.class), (LessonService)services.get(LessonServiceImpl.class)));
     }
+
 
 
 }

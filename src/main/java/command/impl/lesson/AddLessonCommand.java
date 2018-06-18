@@ -15,10 +15,11 @@ public class AddLessonCommand implements Command {
     private LessonService lessonService;
     private CourseService courseService;
 
-    public AddLessonCommand(LessonService lessonService, CourseService courseService){
+    public AddLessonCommand(LessonService lessonService, CourseService courseService) {
         this.lessonService = lessonService;
-        this.courseService =courseService;
+        this.courseService = courseService;
     }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String professor = request.getParameter("professor");

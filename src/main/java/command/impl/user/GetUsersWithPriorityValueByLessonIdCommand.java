@@ -18,7 +18,7 @@ public class GetUsersWithPriorityValueByLessonIdCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         int lessonId = Integer.parseInt(request.getParameter("lessonId"));
         int value = Integer.parseInt(request.getParameter("value"));
-        List<User> users = userService.getUsersWithPriorityValueByLessonId(lessonId, value);
+        //List<User> users = userService.getUsersWithPriorityValueByLessonId(lessonId, value);
         return "";
     }
 }

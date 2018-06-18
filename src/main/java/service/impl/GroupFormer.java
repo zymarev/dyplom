@@ -1,16 +1,17 @@
 package service.impl;
 
+import dao.CourseDao;
 import dao.LessonDao;
 import dao.PriorityDao;
 import dao.UserDao;
-import dto.UserPriority;
+import dto.LessonUsersDto;
+import entity.Course;
 import entity.Lesson;
 import entity.Priority;
 import entity.User;
 import service.Service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,48 +21,80 @@ public class GroupFormer implements Service {
     private UserDao userDao;
     private LessonDao lessonDao;
     private PriorityDao priorityDao;
+    private CourseDao courseDao;
     private Map<Integer, User[]> groups = new HashMap<>();
     private Map<Integer, List<User>> usersPerLesson = new HashMap<>();
 
-    public GroupFormer(UserDao userDao, LessonDao lessonDao, PriorityDao priorityDao){
-        /*this.lessonDao = lessonDao;
+    public GroupFormer(UserDao userDao, LessonDao lessonDao, PriorityDao priorityDao, CourseDao courseDao) {
+        this.lessonDao = lessonDao;
         this.priorityDao = priorityDao;
         this.userDao = userDao;
-        for(Lesson lesson:lessonDao.getAll()){
-            List<User> users = userDao.getUsersWithPriorityValueByLessonId(lesson.getId(), 1);
-            usersPerLesson.put(lesson.getId(), users);
-            groups.put(lesson.getId(), new User[lesson.getMaxCount()]);
-        }*/
+        this.courseDao = courseDao;
+
     }
 
-    public List<UserPriority> formGroups(){
 
-        usersPerLesson.forEach((key, value)-> value.stream().sorted((o1, o2) -> (o1.getAvgMark()>o2.getAvgMark())?1:0));
+    public Map<Integer, User[]> formGroups(String courseName) {
 
-        /////////////////////
-        List<UserPriority> userPriorities = new ArrayList<>();
-        List<User> users = userDao.getAll();
-        for(User user :users){
-            Map<Integer, Integer> prioritiesPerUser = new HashMap<>();
-            priorityDao.getPrioritiesByUserId(user.getId()).forEach((priority->prioritiesPerUser.put(priority.getLessonId(), priority.getValue())));
-            userPriorities.add(new UserPriority(user.getId(), prioritiesPerUser));
+        Course course = courseDao.getIdByName(courseName);
+        for (Lesson lesson : lessonDao.getLessonsByCourceId(course.getId())) {
+            groups.put(lesson.getId(), new User[lesson.getMaxCount()]);
         }
-        for(Lesson lesson:lessonDao.getAll()){
-            List<User> usersForLesson = userDao.getUsersWithPriorityValueByLessonId(lesson.getId(), 1);
-            usersForLesson.stream().sorted((o1, o2) -> (o1.getAvgMark()>o2.getAvgMark())?1:0);
-            User[] variable1 = groups.get(lesson.getId());
-            int restIndex =0;
-            for(int i=0;i<variable1.length;i++){
-                variable1[i] = usersForLesson.get(i);
-                restIndex=i;
+        clearTempGoups(course.getId());
+        int counter = 1;
+        List<User> leftUsers = userDao.getUsersByCourseName(courseName);
+        while (counter <= lessonDao.getLessonsByCourceId(1).size() || leftUsers.size() != 0) {
+            clearTempGoups(course.getId());
+            for (User user : leftUsers) {
+                usersPerLesson.get(getLessonIdMaxPriorityByUser(counter, user)).add(user);
             }
-            usersForLesson = usersForLesson.subList(restIndex, usersForLesson.size()-1);
+            leftUsers = new ArrayList<>();
+            usersPerLesson.forEach((key, value) -> value.sort((o1, o2) -> (int) (o2.getAvgMark() - o1.getAvgMark())));
+            List<LessonUsersDto> lessonUsersDtos = new ArrayList<>();
+            usersPerLesson.forEach((key, value) -> lessonUsersDtos.add(new LessonUsersDto(lessonDao.getLessonById(key), value)));
+            for (LessonUsersDto lessonUsersDto : lessonUsersDtos) {
+                if (lessonUsersDto.getLesson().getMaxCount() <= lessonUsersDto.getUsers().size()) {
+                    for (int i = 0; i < groups.get(lessonUsersDto.getLesson().getId()).length; i++) {
+                        groups.get(lessonUsersDto.getLesson().getId())[i] = lessonUsersDto.getUsers().get(i);
+                    }
+                    leftUsers.addAll(lessonUsersDto.getUsers().subList(lessonUsersDto.getLesson().getMaxCount(), lessonUsersDto.getUsers().size()));
+                }
+            }
+            counter++;
+        }
+        groups.forEach((key,value)-> {
+            for(User user:value){
+                userDao.addUserToLessonGroup(user.getId(), key);
+            }
+        });
+        return groups;
+    }
+
+    private void clearTempGoups(int courseId) {
+        for (Lesson lesson : lessonDao.getLessonsByCourceId(courseId)) {
+            usersPerLesson.put(lesson.getId(), new ArrayList<>());
 
         }
+    }
 
-        return userPriorities;
+    private int getLessonIdMaxPriorityByUser(int priorityValue, User user) {
+        List<Priority> prioritiesByUser = priorityDao.getPrioritiesByUserId(user.getId());
+        for (Priority priority : prioritiesByUser) {
+            if (priority.getValue() == priorityValue) {
+                return priority.getLessonId();
+            }
+        }
+        return -1;
+    }
 
-
-
+    private int getUsersWithPriorityOneToLesson(int lessonId) {
+        List<Priority> priorities = priorityDao.getAll();
+        List<Integer> usersPerLessonWithPriorityOne = new ArrayList<>();
+        priorities.forEach(priority -> {
+            if (priority.getValue() == 1 && priority.getLessonId() == lessonId) {
+                usersPerLessonWithPriorityOne.add(priority.getUserId());
+            }
+        });
+        return usersPerLessonWithPriorityOne.size();
     }
 }

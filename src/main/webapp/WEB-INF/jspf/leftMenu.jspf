@@ -3,13 +3,13 @@
 <div class="viewport">
   <div class="list-group">
     <c:if test = "${user.role eq 'USER'}">
-      <a class="list-group-item" href="Controller.do?command=userLessons">Установить приоритеты</a>
-      <a class="list-group-item" href="Controller.do?command=prioritiesByUser">Просмотреть приоритеты</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=userLessons" style="background-color: #9CD2C5">Установить приоритеты</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=prioritiesByUser" style="background-color: #9CD2C5">Просмотреть приоритеты</a>
     </c:if>
     <c:if test = "${user.role eq 'ADMIN'}">
-      <a class="list-group-item" href="Controller.do?command=allUsers">Все пользователи</a>
-      <a class="list-group-item" href="Controller.do?command=allLessons">Все предметы</a>
-      <a class="list-group-item" href="Controller.do?command=blockedAccounts">queries</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=allUsers" style="background-color: #9CD2C5">Все пользователи</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=allLessons" style="background-color: #9CD2C5">Все предметы</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=formGroups" style="background-color: #9CD2C5">Сформировать группы</a>
     </c:if>
   </div>
 </div>
