@@ -47,9 +47,10 @@
             <table id="myTable" class="table">
                 <thead>
                 <tr>
-                    <th>Название</th>
-                    <th>Количсетво студентов<th>
-                    <th>Преподаватель</th>
+                    <th class="clickable waves-effect">Название</th>
+                    <th class="clickable waves-effect">Количество студентов</th>
+                    <th class="clickable waves-effect">Преподаватель</th>
+                    <th><th>
                 </tr>
                 </thead>
                 <tbody>
@@ -59,6 +60,7 @@
                         <td>${lesson.name}</td>
                         <td>${lesson.maxCount}</td>
                         <td>${lesson.professor}</td>
+                        <td><input type="button"/></td>
                     </tr>
                 </c:forEach>
                 </tbody>

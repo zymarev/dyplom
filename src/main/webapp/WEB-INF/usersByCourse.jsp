@@ -47,9 +47,9 @@
             <table id="myTable" class="table">
                 <thead>
                 <tr>
-                    <th>Имя</th>
-                    <th>Фамилия<th>
-                    <th>Средняя оценка</th>
+                    <th class="clickable waves-effect">Имя</th>
+                    <th class="clickable waves-effect">Фамилия</th>
+                    <th class="clickable waves-effect">Средняя оценка</th>
                 </tr>
                 </thead>
                 <tbody>
