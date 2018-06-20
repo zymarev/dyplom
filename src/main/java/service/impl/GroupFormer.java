@@ -4,7 +4,6 @@ import dao.CourseDao;
 import dao.LessonDao;
 import dao.PriorityDao;
 import dao.UserDao;
-import dto.LessonUsersDto;
 import entity.Course;
 import entity.Lesson;
 import entity.Priority;
@@ -33,43 +32,56 @@ public class GroupFormer implements Service {
 
     }
 
+    private void AddUserToGroup(User user, int priorityValue) {
+        int lessonId = getLessonIdMaxPriorityByUser(priorityValue, user);
+        boolean flag = true;
+        while (flag) {
+            usersPerLesson.get(lessonId).add(user);
+            usersPerLesson.get(lessonId).sort((user1, user2) -> (int) (user2.getAvgMark() - user1.getAvgMark()));
+            if (usersPerLesson.get(lessonId).size() > lessonDao.getMaxCountByLessonId(lessonId)) {
+                User tempUser = usersPerLesson.get(lessonId).get(usersPerLesson.get(lessonId).size() - 1);
+                usersPerLesson.get(lessonId).remove(usersPerLesson.get(lessonId).size() - 1);
+                List<Priority> prioritiesForTempUser = priorityDao.getPrioritiesByUserId(tempUser.getId());
+                for (Priority priority : prioritiesForTempUser) {
+                    if (priority.getLessonId() == lessonId) {
+                        priorityValue = priority.getValue();
+                        break;
+                    }
+                }
+                AddUserToGroup(tempUser, ++priorityValue);
+            }
+            return;
+        }
+    }
 
     public Map<Integer, User[]> formGroups(String courseName) {
 
         Course course = courseDao.getIdByName(courseName);
-        for (Lesson lesson : lessonDao.getLessonsByCourceId(course.getId())) {
-            groups.put(lesson.getId(), new User[lesson.getMaxCount()]);
-        }
+        List<User> allUsersForGroup = userDao.getUsersByCourseName(courseName);
         clearTempGoups(course.getId());
-        int counter = 1;
-        List<User> leftUsers = userDao.getUsersByCourseName(courseName);
-        while (counter <= lessonDao.getLessonsByCourceId(1).size() || leftUsers.size() != 0) {
-            clearTempGoups(course.getId());
-            for (User user : leftUsers) {
-                usersPerLesson.get(getLessonIdMaxPriorityByUser(counter, user)).add(user);
-            }
-            leftUsers = new ArrayList<>();
-            usersPerLesson.forEach((key, value) -> value.sort((o1, o2) -> (int) (o2.getAvgMark() - o1.getAvgMark())));
-            List<LessonUsersDto> lessonUsersDtos = new ArrayList<>();
-            usersPerLesson.forEach((key, value) -> lessonUsersDtos.add(new LessonUsersDto(lessonDao.getLessonById(key), value)));
-            for (LessonUsersDto lessonUsersDto : lessonUsersDtos) {
-                if (lessonUsersDto.getLesson().getMaxCount() <= lessonUsersDto.getUsers().size()) {
-                    for (int i = 0; i < groups.get(lessonUsersDto.getLesson().getId()).length; i++) {
-                        groups.get(lessonUsersDto.getLesson().getId())[i] = lessonUsersDto.getUsers().get(i);
-                    }
-                    leftUsers.addAll(lessonUsersDto.getUsers().subList(lessonUsersDto.getLesson().getMaxCount(), lessonUsersDto.getUsers().size()));
+        for (User user : allUsersForGroup) {
+            boolean flag = false;
+            for (Lesson lesson : lessonDao.getLessonsByCourceId(course.getId())) {
+                if (checkUserInGroup(lesson.getId(), user)) {
+                    flag = true;
                 }
             }
-            counter++;
-        }
-        groups.forEach((key,value)-> {
-            for(User user:value){
-                userDao.addUserToLessonGroup(user.getId(), key);
+            if (!flag) {
+                AddUserToGroup(user, 1);
             }
-        });
+        }
+        usersPerLesson.forEach((lessonId, users) -> groups.put(lessonId, users.toArray(new User[0])));
+        writeToDb();
         return groups;
     }
-    
+    private void writeToDb(){
+        groups.forEach((key, value) -> {
+            for (User user : value) {
+                userDao.addUserToLessonGroup(user.getId(), key);}});
+    }
+    private boolean checkUserInGroup(int lessonId, User user) {
+        return usersPerLesson.get(lessonId).contains(user);
+    }
 
     private void clearTempGoups(int courseId) {
         for (Lesson lesson : lessonDao.getLessonsByCourceId(courseId)) {
@@ -86,16 +98,5 @@ public class GroupFormer implements Service {
             }
         }
         return -1;
-    }
-
-    private int getUsersWithPriorityOneToLesson(int lessonId) {
-        List<Priority> priorities = priorityDao.getAll();
-        List<Integer> usersPerLessonWithPriorityOne = new ArrayList<>();
-        priorities.forEach(priority -> {
-            if (priority.getValue() == 1 && priority.getLessonId() == lessonId) {
-                usersPerLessonWithPriorityOne.add(priority.getUserId());
-            }
-        });
-        return usersPerLessonWithPriorityOne.size();
     }
 }

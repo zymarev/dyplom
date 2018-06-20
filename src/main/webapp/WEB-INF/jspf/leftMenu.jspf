@@ -3,14 +3,14 @@
 <div class="viewport">
   <div class="list-group">
     <c:if test = "${user.role eq 'USER'}">
-      <a class="list-group-item waves-effect" href="Controller.do?command=userLessons" style="background-color: #9CD2C5">Установить приоритеты</a>
-      <a class="list-group-item waves-effect" href="Controller.do?command=prioritiesByUser" style="background-color: #9CD2C5">Просмотреть приоритеты</a>
-      <a class="list-group-item waves-effect" href="Controller.do?command=getGroupForUser" style="background-color: #9CD2C5">Сформированные группы</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=userLessons" style="background-color: #FAF7D2">Установить приоритеты</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=prioritiesByUser" style="background-color: #FAF7D2">Просмотреть приоритеты</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=getGroupForUser" style="background-color: #FAF7D2">Сформированные группы</a>
     </c:if>
     <c:if test = "${user.role eq 'ADMIN'}">
-      <a class="list-group-item waves-effect" href="Controller.do?command=allUsers" style="background-color: #9CD2C5">Все пользователи</a>
-      <a class="list-group-item waves-effect" href="Controller.do?command=allLessons" style="background-color: #9CD2C5">Все предметы</a>
-      <a class="list-group-item waves-effect" href="Controller.do?command=getGroups&courseNameForGroups=pi-15" style="background-color: #9CD2C5">Сформировать группы</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=allUsers" style="background-color: #FAF7D2">Все пользователи</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=allLessons" style="background-color: #FAF7D2">Все предметы</a>
+      <a class="list-group-item waves-effect" href="Controller.do?command=getGroups&courseNameForGroups=pi-15" style="background-color: #FAF7D2">Сформировать группы</a>
     </c:if>
   </div>
 </div>

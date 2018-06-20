@@ -35,7 +35,7 @@
 </head>
 <body>
 <%@include file="/WEB-INF/jspf/header.jspf"%>
-<div class="container-fluid" style="background-color: #F0F8FB">
+<div class="container-fluid" style="background-color: #F9F9F2">
     <div class="row">
         <div class="col-3">
             <%@include file="/WEB-INF/jspf/leftMenu.jspf"%>
@@ -62,9 +62,9 @@
                <c:forEach var="user" items="${map.users}">
                <tr class="collapse ${map.lesson.name}">
 
-                           <td style="background-color: #CAF6EC">${user.firstName}</td>
-                         	<td style="background-color: #CAF6EC">${user.lastName}</td>
-                           <td style="background-color: #CAF6EC">${user.avgMark}</td>
+                           <td style="background-color: #F6F3CC">${user.firstName}</td>
+                         	<td style="background-color: #F6F3CC">${user.lastName}</td>
+                           <td style="background-color: #F6F3CC">${user.avgMark}</td>
 
                        </tr>
                 </c:forEach>
