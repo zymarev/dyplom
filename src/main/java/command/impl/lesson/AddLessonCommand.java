@@ -29,5 +29,6 @@ public class AddLessonCommand implements Command {
         int courseId = courseService.getIdByName(courseName).getId();
         lessonService.addLesson(lessonName, maxValue, courseId, professor);
         return Path.PAGE_LESSONS_BY_COURSE;
+        ////////
     }
 }
